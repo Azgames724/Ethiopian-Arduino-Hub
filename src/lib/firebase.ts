@@ -125,60 +125,16 @@ export async function getApplicationFromFirestore(refCode: string, email?: strin
   const path = `applications/${docId}`;
 
   try {
-    // 1. Direct document lookup by reference ID
+    // 1. Direct document lookup by reference ID (no list query, protecting all applicant records)
     const docRef = doc(db, 'applications', docId);
     const snap = await getDoc(docRef);
 
     if (snap.exists()) {
       const data = snap.data();
-      if (!email || data.email.toLowerCase() === email.trim().toLowerCase()) {
+      // Ensure email verification matches to protect applicant secrets and PII
+      if (!email || data.email?.toLowerCase() === email.trim().toLowerCase()) {
         return {
           id: snap.id,
-          referenceNumber: data.referenceNumber,
-          email: data.email,
-          fullName: data.fullName,
-          fatherName: data.fatherName,
-          grandfatherName: data.grandfatherName,
-          dob: data.dob,
-          gender: data.gender,
-          phone: data.phone,
-          language: data.language,
-          country: data.country,
-          region: data.region,
-          city: data.city,
-          educationStatus: data.educationStatus,
-          institution: data.institution,
-          fieldOrGrade: data.fieldOrGrade,
-          computerAccess: data.computerAccess,
-          experienceLevel: data.experienceLevel,
-          programCode: data.programCode,
-          programName: data.programName,
-          coverLetterAmharic: data.coverLetterAmharic,
-          documentType: data.documentType,
-          fileName: data.fileName,
-          status: data.status,
-          submittedAt: data.createdAt,
-          updatedAt: data.updatedAt,
-          notes: data.notes,
-          cohort: data.cohort,
-          nextSteps: data.nextSteps
-        };
-      }
-    }
-
-    // 2. Query fallback by referenceNumber field
-    const q = query(
-      collection(db, 'applications'),
-      where('referenceNumber', '==', refCode.trim().toUpperCase()),
-      limit(1)
-    );
-    const querySnap = await getDocs(q);
-    if (!querySnap.empty) {
-      const docSnap = querySnap.docs[0];
-      const data = docSnap.data();
-      if (!email || data.email.toLowerCase() === email.trim().toLowerCase()) {
-        return {
-          id: docSnap.id,
           referenceNumber: data.referenceNumber,
           email: data.email,
           fullName: data.fullName,

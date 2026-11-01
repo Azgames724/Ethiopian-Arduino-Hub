@@ -44,12 +44,24 @@ export const StatusPage: React.FC<StatusPageProps> = ({ initialReference, onNavi
     }
   }, [initialReference]);
 
+  function maskEmail(email: string): string {
+    if (!email || !email.includes('@')) return '***@***.com';
+    const [user, domain] = email.split('@');
+    if (user.length <= 2) return `${user[0]}***@${domain}`;
+    return `${user.slice(0, 2)}***@${domain}`;
+  }
+
   const handleSearch = async (overrideRef?: string, overrideEmail?: string) => {
     const targetRef = (overrideRef !== undefined ? overrideRef : refInput).trim().toUpperCase();
     const targetEmail = (overrideEmail !== undefined ? overrideEmail : emailInput).trim().toLowerCase();
 
     if (!targetRef) {
       setSearchError('Please enter your Application Reference Number.');
+      return;
+    }
+
+    if (!targetEmail) {
+      setSearchError('To protect student privacy and secrets, please provide the email used in your application.');
       return;
     }
 
@@ -168,7 +180,7 @@ export const StatusPage: React.FC<StatusPageProps> = ({ initialReference, onNavi
 
               <div>
                 <label className="block text-xs font-semibold text-neutral-300 mb-1.5">
-                  Email used in your application <span className="text-neutral-500 text-[10px]">(Optional for check)</span>
+                  Email used in your application <span className="text-emerald-400">*</span> <span className="text-neutral-500 text-[10px]">(Required to verify identity)</span>
                 </label>
                 <input
                   type="email"
@@ -229,11 +241,16 @@ export const StatusPage: React.FC<StatusPageProps> = ({ initialReference, onNavi
             {/* Profile Bar */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-neutral-800">
               <div className="space-y-1">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <span className="font-mono-custom text-xs font-bold text-neutral-400 px-2 py-0.5 rounded bg-neutral-950 border border-neutral-800">
                     {result.referenceNumber}
                   </span>
+                  <span className="text-xs text-neutral-500">• {maskEmail(result.email)}</span>
                   <span className="text-xs text-neutral-500">• Applied {new Date(result.submittedAt).toLocaleDateString()}</span>
+                  <span className="inline-flex items-center gap-1 text-[11px] text-emerald-400 font-mono-custom px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20">
+                    <ShieldCheck className="w-3 h-3" />
+                    <span>Verified & Confidential</span>
+                  </span>
                 </div>
                 <h2 className="font-display text-2xl font-bold text-white">
                   {result.fullName} {result.fatherName}

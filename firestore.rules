@@ -44,9 +44,11 @@ service cloud.firestore {
       data.status in ['submitted', 'under_review', 'info_required', 'accepted', 'waitlisted', 'enrolled', 'rejected'];
     }
 
+    // Applications: Protected student registrations
+    // Listing/scraping is strictly forbidden to protect applicant PII and secrets
     match /applications/{applicationId} {
+      allow list: if false;
       allow get: if isValidId(applicationId);
-      allow list: if request.query.limit <= 50;
       allow create: if isValidId(applicationId) &&
         isValidApplication(incoming()) &&
         incoming().status == 'submitted';
