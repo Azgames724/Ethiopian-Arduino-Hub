@@ -1,0 +1,56 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidApplication(data) {
+      return data.keys().hasAll([
+        'referenceNumber', 'email', 'fullName', 'fatherName', 'dob',
+        'gender', 'phone', 'region', 'city', 'educationStatus',
+        'institution', 'fieldOrGrade', 'programCode', 'programName',
+        'coverLetterAmharic', 'status'
+      ]) &&
+      data.referenceNumber is string && data.referenceNumber.size() <= 64 &&
+      data.email is string && data.email.size() <= 128 &&
+      data.fullName is string && data.fullName.size() <= 64 &&
+      data.fatherName is string && data.fatherName.size() <= 64 &&
+      data.dob is string && data.dob.size() <= 32 &&
+      data.gender is string && data.gender.size() <= 32 &&
+      data.phone is string && data.phone.size() <= 32 &&
+      data.region is string && data.region.size() <= 64 &&
+      data.city is string && data.city.size() <= 64 &&
+      data.educationStatus is string && data.educationStatus.size() <= 64 &&
+      data.institution is string && data.institution.size() <= 128 &&
+      data.fieldOrGrade is string && data.fieldOrGrade.size() <= 64 &&
+      data.programCode is string && data.programCode.size() <= 32 &&
+      data.programName is string && data.programName.size() <= 64 &&
+      data.coverLetterAmharic is string && data.coverLetterAmharic.size() <= 4096 &&
+      data.status in ['submitted', 'under_review', 'info_required', 'accepted', 'waitlisted', 'enrolled', 'rejected'];
+    }
+
+    match /applications/{applicationId} {
+      allow get: if isValidId(applicationId);
+      allow list: if request.query.limit <= 50;
+      allow create: if isValidId(applicationId) &&
+        isValidApplication(incoming()) &&
+        incoming().status == 'submitted';
+      allow update, delete: if false;
+    }
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "entities": {
+    "application": {
+      "title": "Student Application",
+      "description": "Student registration applications submitted to Ethiopian Arduino Hub.",
+      "type": "object",
+      "properties": {
+        "referenceNumber": {
+          "type": "string",
+          "description": "Unique registration reference code (e.g. EAH-2026-XXXX)",
+          "maxLength": 64
+        },
+        "email": {
+          "type": "string",
+          "description": "Applicant email address",
+          "maxLength": 128
+        },
+        "fullName": {
+          "type": "string",
+          "description": "First name of the student",
+          "maxLength": 64
+        },
+        "fatherName": {
+          "type": "string",
+          "description": "Father's name of the student",
+          "maxLength": 64
+        },
+        "grandfatherName": {
+          "type": "string",
+          "description": "Grandfather's name of the student",
+          "maxLength": 64
+        },
+        "dob": {
+          "type": "string",
+          "description": "Date of birth in Gregorian calendar",
+          "maxLength": 32
+        },
+        "gender": {
+          "type": "string",
+          "description": "Gender",
+          "maxLength": 32
+        },
+        "phone": {
+          "type": "string",
+          "description": "Contact telephone number",
+          "maxLength": 32
+        },
+        "language": {
+          "type": "string",
+          "description": "Preferred communication language",
+          "maxLength": 32
+        },
+        "country": {
+          "type": "string",
+          "description": "Country of residence",
+          "maxLength": 64
+        },
+        "region": {
+          "type": "string",
+          "description": "Ethiopian region or administrative zone",
+          "maxLength": 64
+        },
+        "city": {
+          "type": "string",
+          "description": "City or municipality",
+          "maxLength": 64
+        },
+        "educationStatus": {
+          "type": "string",
+          "description": "Current educational status",
+          "maxLength": 64
+        },
+        "institution": {
+          "type": "string",
+          "description": "School, TVET, or University name",
+          "maxLength": 128
+        },
+        "fieldOrGrade": {
+          "type": "string",
+          "description": "Field of study or grade level",
+          "maxLength": 64
+        },
+        "computerAccess": {
+          "type": "string",
+          "description": "Laptop or PC access status",
+          "maxLength": 64
+        },
+        "experienceLevel": {
+          "type": "string",
+          "description": "Prior technical experience level",
+          "maxLength": 32
+        },
+        "programCode": {
+          "type": "string",
+          "description": "Selected department code (e.g. web, robotics, airspace, chem)",
+          "maxLength": 32
+        },
+        "programName": {
+          "type": "string",
+          "description": "Full name of selected program",
+          "maxLength": 64
+        },
+        "coverLetterAmharic": {
+          "type": "string",
+          "description": "Statement of purpose written in Amharic",
+          "maxLength": 4096
+        },
+        "documentType": {
+          "type": "string",
+          "description": "Type of identification attached",
+          "maxLength": 64
+        },
+        "fileName": {
+          "type": "string",
+          "description": "Name of uploaded document file",
+          "maxLength": 128
+        },
+        "status": {
+          "type": "string",
+          "description": "Review status of the registration",
+          "enum": ["submitted", "under_review", "info_required", "accepted", "waitlisted", "enrolled", "rejected"]
+        },
+        "notes": {
+          "type": "string",
+          "description": "Admissions committee review notes",
+          "maxLength": 1024
+        },
+        "cohort": {
+          "type": "string",
+          "description": "Assigned cohort group",
+          "maxLength": 64
+        },
+        "nextSteps": {
+          "type": "string",
+          "description": "Action items or next steps for student",
+          "maxLength": 512
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp in ISO format"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Last update timestamp in ISO format"
+        }
+      },
+      "required": [
+        "referenceNumber",
+        "email",
+        "fullName",
+        "fatherName",
+        "dob",
+        "gender",
+        "phone",
+        "region",
+        "city",
+        "educationStatus",
+        "institution",
+        "fieldOrGrade",
+        "programCode",
+        "programName",
+        "coverLetterAmharic",
+        "status"
+      ]
+    }
+  },
+  "firestore": {
+    "/applications/{applicationId}": {
+      "schema": "#/entities/application",
+      "description": "Student registration applications for Ethiopian Arduino Hub programs."
+    }
+  }
+}

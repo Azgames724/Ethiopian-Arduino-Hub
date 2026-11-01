@@ -1,0 +1,6 @@
+{
+  "name": "Ethiopian Arduino Hub (EAH)",
+  "description": "Ethiopian Arduino Hub (EAH) is a hands-on technology learning community helping young Ethiopians build practical skills in Web Development, Robotics, and Space Science.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

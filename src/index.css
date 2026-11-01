@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Manrope', 'Noto Sans Ethiopic', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+}
+
+.font-display {
+  font-family: 'Space Grotesk', 'Manrope', sans-serif;
+}
+
+.font-mono-custom {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.ethiopic-text {
+  font-family: 'Noto Sans Ethiopic', 'Manrope', sans-serif;
+}
